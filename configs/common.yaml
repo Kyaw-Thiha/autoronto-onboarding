@@ -1,0 +1,30 @@
+# configs/common.yaml
+
+# -------------------------
+# General settings
+# -------------------------
+seed: 42        # Random seed for reproducibility
+device: "cuda"  # "cuda" or "cpu"
+
+# -------------------------
+# Data paths
+# -------------------------
+train_images: "data/train"
+valid_images: "data/valid"
+train_annotations: "data/annotations_train.coco.json"
+valid_annotations: "data/annotations_valid.coco.json"
+
+# -------------------------
+# Training hyperparameters
+# -------------------------
+epochs: 50          # Number of training epochs
+batch_size: 16      # Number of images per batch
+learning_rate: 0.001
+weight_decay: 0.0005
+
+# -------------------------
+# Image preprocessing
+# -------------------------
+image_size: [256, 256]   # Resize images to (height, width)
+num_workers: 4           # Dataloader workers
+augmentations: true      # Apply data augmentation
