@@ -14,6 +14,25 @@ VALID_ANN = Path("data/annotations_valid.coco.json")
 
 
 def load_coco(path: Path):
+    """
+    Load a COCO annotation JSON file and return useful structures.
+
+    Parameters
+    ----------
+    path : Path
+        Path to the COCO annotation JSON file.
+
+    Returns
+    -------
+    images : list[dict]
+        List of image entries, each with metadata (id, width, height, file_name, etc.).
+    annotations : list[dict]
+        List of annotation entries (bounding boxes, segmentation, category_id, etc.).
+    id_to_cat : dict[int, str]
+        Mapping from category ID to category name.
+    id_to_img : dict[int, dict]
+        Mapping from image ID to the corresponding image metadata dictionary.
+    """
     with path.open("r", encoding="utf-8") as f:
         coco = json.load(f)
     # Basic schema checks
@@ -28,6 +47,34 @@ def load_coco(path: Path):
 
 
 def analyze_split(name: str, img_dir: Path, ann_path: Path):
+    """
+    Analyze a dataset split (train/valid) given its COCO annotations and image directory.
+
+    Parameters
+    ----------
+    name : str
+        Name of the split (e.g., "train" or "valid") used for printing and report filenames.
+    img_dir : Path
+        Directory containing the image files for this split.
+    ann_path : Path
+        Path to the annotation JSON file for this split.
+
+    Returns
+    -------
+    None
+        Prints analysis results to the console and writes reports to `reports/`.
+
+    What it does
+    ------------
+    - Loads the COCO annotations via `load_coco`.
+    - Counts images (in JSON vs on disk), annotations, and categories.
+    - Computes per-category annotation frequencies.
+    - Computes statistics (min, max, mean, median) for image widths, heights, and aspect ratios.
+    - Prints the top 10 most frequent categories.
+    - Writes two tab-separated report files in `reports/`:
+        * `<split>_category_freq.tsv`  → category frequencies
+        * `<split>_image_sizes.tsv`   → per-image width, height, aspect ratio
+    """
     print(f"\n=== {name.upper()} ===")
     if not ann_path.exists():
         print(f"!! Missing annotations: {ann_path}")
