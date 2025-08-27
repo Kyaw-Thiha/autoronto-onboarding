@@ -27,6 +27,11 @@ class Yolo(Adapter):
             self.model.load(checkpoint)
 
     def train(self, training_name="yolo_train"):
+        """
+        Wrapper around YOLO training
+        Training Parameters: https://docs.ultralytics.com/modes/train/#train-settings
+        Image Augmentations: https://docs.ultralytics.com/guides/yolo-data-augmentation/
+        """
         return self.model.train(
             # Model Configs
             data=self.data_path,
@@ -39,6 +44,7 @@ class Yolo(Adapter):
             save_period=10,
             project="outputs",
             name=training_name,
+            exist_ok=True,
             # Validationg & Metrics
             val=True,
             plots=True,
@@ -56,7 +62,12 @@ class Yolo(Adapter):
         )
 
     def validate(self, validation_name="yolo_val"):
+        """
+        Wrapper around YOLO validation.
+        Validation Arguments: https://docs.ultralytics.com/modes/val/
+        """
         metrics = self.model.val(
+            data=self.data_path,
             # Checkpoing Saving Configs
             project="outputs",
             name=validation_name,
@@ -71,6 +82,10 @@ class Yolo(Adapter):
         print(metrics.confusion_matrix.to_df())
 
     def benchmark(self, checkpoint="yolo11n.pt"):
+        """
+        Wrapper around YOLO benchmark.
+        Validation Arguments: https://docs.ultralytics.com/modes/benchmark/
+        """
         benchmark(Path(checkpoint), data=self.data_path, imgsz=256)
 
     # def _load_configs(self):
