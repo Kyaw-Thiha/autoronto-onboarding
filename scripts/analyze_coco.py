@@ -7,7 +7,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import mean, median
 
-from load_images import load_coco
+from scripts.load_images import load_coco
 
 TRAIN_IM_DIR = Path("data/train")
 VALID_IM_DIR = Path("data/valid")
