@@ -11,6 +11,7 @@ pandas>=2.2
 scipy>=1.13
 scikit-learn>=1.4
 tensorboard>=2.17
+plotly
 
 # ===== Metrics / COCO eval =====
 pycocotools>=2.0.7
@@ -18,6 +19,7 @@ torchmetrics>=1.4
 
 # ===== Training & baselines =====
 ultralytics>=8.3.0         # YOLOv8 baseline, easy export/deploy
+rfdetr                     # Roboflow RF-DETR
 
 # ===== Transformers & zero-shot =====
 transformers>=4.43
