@@ -11,7 +11,14 @@ pandas>=2.2
 scipy>=1.13
 scikit-learn>=1.4
 tensorboard>=2.17
+matplotlib
 plotly
+
+# ===== Benchmarks =====
+onnx
+onnxslim
+openvino
+tensorflow
 
 # ===== Metrics / COCO eval =====
 pycocotools>=2.0.7

@@ -7,12 +7,19 @@ from ultralytics.utils.benchmarks import benchmark
 
 from models.adapter import Adapter
 
+# Absolute path for yolo dateset yaml
+THIS_FILE = Path(__file__).resolve()
+ROOT = THIS_FILE.parents[1]  # project root (one level above 'models')
+DATA_YAML = ROOT / "data" / "yolo" / "dataset.yaml"
+
+assert DATA_YAML.exists(), f"Missing dataset.yaml at {DATA_YAML}"
+
 
 class Yolo(Adapter):
     model: YOLO
-    data_path: str = "data/yolo/dataset.yaml"
+    data_path: Path = DATA_YAML
 
-    def __init__(self, model_name: str, checkpoint: Optional[str]) -> None:
+    def __init__(self, model_name: str, checkpoint: Optional[str] = None) -> None:
         super().__init__()
         self.model = YOLO(model_name)
         if checkpoint is not None:
