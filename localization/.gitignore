@@ -1,0 +1,13 @@
+# CMake build
+/build/
+/build-*/
+
+# vcpkg
+/external/vcpkg/buildtrees/
+/external/vcpkg/downloads/
+/external/vcpkg/installed/
+/external/vcpkg/packages/
+
+# IDEs
+.vscode/
+.idea/
