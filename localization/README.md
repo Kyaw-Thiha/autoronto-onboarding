@@ -37,3 +37,5 @@ find_package(Eigen3 CONFIG REQUIRED)
 
 target_link_libraries(app PRIVATE Eigen3::Eigen)
 ```
+
+After that, don't forget to rebuild the `vkpkg` & `cmake`.
