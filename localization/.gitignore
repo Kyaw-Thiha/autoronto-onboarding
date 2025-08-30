@@ -1,6 +1,7 @@
 # CMake build
 /build/
 /build-*/
+.cache
 
 # vcpkg
 /external/vcpkg/buildtrees/
