@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Use clang++ by default; allow override via CXX env var.
-CXX="${CXX:-clang++}"
-
 # Generate cases if missing
 [[ -d testcases ]] || python3 gen_test.py
 
-# Compile with clang++
-if [[ ! -x ./lane_align ]]; then
-  $CXX lane_align_task.cpp -O2 -std=gnu++17 $(pkg-config --cflags --libs opencv4) -I/usr/include/eigen3 -o lane_align
-fi
+# Compile if missing
+[[ -x ./lane_align ]] || g++ lane_align_task.cpp -O2 -std=gnu++17 $(pkg-config --cflags --libs opencv4) -I/usr/include/eigen3 -o lane_align
 
 pass=0
 fail=0

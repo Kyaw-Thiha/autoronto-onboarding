@@ -45,9 +45,16 @@ After that, don't forget to rebuild the `vkpkg` & `cmake`.
 Run the python test file to generate testing images & corresponding csv.
 ```bash
 chmod +x test.sh
+chmod +x test_gcc.sh
 ```
 
+For testing with clang
 ```bash
 ./test.sh
+```
+
+For testing with gcc
+```bash
+./test_gcc.sh
 ```
 
