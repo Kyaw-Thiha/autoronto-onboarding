@@ -1,3 +1,4 @@
+# Localization
 ## Building files
 Ensure vcpkg is installed already.
 ```bash
@@ -39,3 +40,14 @@ target_link_libraries(app PRIVATE Eigen3::Eigen)
 ```
 
 After that, don't forget to rebuild the `vkpkg` & `cmake`.
+
+## Testing
+Run the python test file to generate testing images & corresponding csv.
+```bash
+chmod +x test.sh
+```
+
+```bash
+./test.sh
+```
+
