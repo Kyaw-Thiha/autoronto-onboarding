@@ -4,6 +4,11 @@ project(localization-app CXX)
 add_executable(app lane_align_task.cpp)
 
 # vcpkg provides the config package:
+# OpenCV
 find_package(OpenCV REQUIRED)
 target_link_libraries(app PRIVATE ${OpenCV_LIBS})
 target_include_directories(app PRIVATE ${OpenCV_INCLUDE_DIRS})
+
+# Eigen3
+find_package(Eigen3 CONFIG REQUIRED)
+target_link_libraries(app PRIVATE Eigen3::Eigen)

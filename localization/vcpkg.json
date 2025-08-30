@@ -2,6 +2,7 @@
   "name": "localization-app",
   "version-string": "0.1.0",
   "dependencies": [
-    "opencv4"
+    "opencv4",
+    "eigen3"
   ]
 }
