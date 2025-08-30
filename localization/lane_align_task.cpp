@@ -5,9 +5,11 @@
 
 #include <Eigen/Dense>
 #include <cmath>
+#include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <opencv2/opencv.hpp>
 #include <sstream>
 #include <string>
@@ -56,6 +58,7 @@ static cv::Mat rasterizeROI(const std::vector<Pt> &poly, cv::Size sz,
   // 1) cv::getStructuringElement(cv::MORPH_ELLIPSE, Size(2*half_width_px+1,
   // 2*half_width_px+1)) 2) cv::dilate(roi, roi, kernel)
 
+  // Dilating the roi polyline by ellipse of radius 'half_width'
   cv::Mat kernel = cv::getStructuringElement(
       cv::MORPH_ELLIPSE,
       cv::Size(2 * half_width_px + 1, 2 * half_width_px + 1));
@@ -87,18 +90,56 @@ static FitResult fitLineXY(const std::vector<cv::Point> &pts) {
   }
   meanx /= N;
 
+  // If there are less than 20 points, there is not enough points
+  if (pts.size() < 20) {
+    fr.m = std::numeric_limits<double>::quiet_NaN();
+    fr.c = std::numeric_limits<double>::quiet_NaN();
+    fr.r2 = std::numeric_limits<double>::quiet_NaN();
+    fr.ok = false;
+    return fr;
+  }
+
   // Solve least squares
+  // Getting the line of best fit with QR decomposition
   Eigen::Vector2d theta = A.colPivHouseholderQr().solve(x);
   fr.m = theta(0);
   fr.c = theta(1);
 
-  // TODO B: compute R^2
-  // Use SS_tot and SS_res as described in the instructions.
-  // Guard division by ~0. Set fr.r2 to 0 if SS_tot is extremely small.
+  // Getting the SS_res
+  double SS_res = 0;
+  for (int i = 0; i < N; i++) {
+    double x_hat = fr.m * pts[i].y + fr.c;
+    double difference = pts[i].x - x_hat;
 
-  // your code here
+    SS_res += difference * difference;
+  };
 
+  // Getting the SS_tot
+
+  double SS_tot = 0;
+  for (int i = 0; i < N; i++) {
+    double difference = pts[i].x - meanx;
+
+    SS_tot += difference * difference;
+  };
+
+  // Calculating the R^2
+  if (std::abs(SS_tot) < 1e-9) {
+    fr.r2 = 0;
+  } else {
+    fr.r2 = 1 - SS_res / SS_tot;
+  }
   fr.ok = true;
+
+  // If R2 < 0.9, it is bad fit
+  if (fr.r2 < 0.90f) {
+    fr.m = std::numeric_limits<double>::quiet_NaN();
+    fr.c = std::numeric_limits<double>::quiet_NaN();
+    fr.r2 = std::numeric_limits<double>::quiet_NaN();
+    fr.ok = false;
+    return fr;
+  }
+
   return fr;
 }
 
