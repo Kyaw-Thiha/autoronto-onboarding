@@ -68,6 +68,7 @@ class Yolo(Adapter):
         """
         metrics = self.model.val(
             data=self.data_path,
+            conf=0.3,
             # Checkpoing Saving Configs
             project="outputs",
             name=validation_name,
