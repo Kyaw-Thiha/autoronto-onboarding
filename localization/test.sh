@@ -7,13 +7,16 @@ CXX="${CXX:-clang++}"
 # Generate cases if missing
 [[ -d testcases ]] || python3 gen_test.py
 
-# Compile with clang++
-if [[ ! -x ./lane_align ]]; then
-  $CXX lane_align_task.cpp -O2 -std=gnu++17 $(pkg-config --cflags --libs opencv4) -I/usr/include/eigen3 -o lane_align
+# Compile with clang++ (rebuild if source is newer or binary missing)
+if [[ ! -x ./lane_align || lane_align_task.cpp -nt lane_align ]]; then
+  "$CXX" lane_align_task.cpp -O2 -std=gnu++17 $(pkg-config --cflags --libs opencv4) -I/usr/include/eigen3 -o lane_align
 fi
 
 pass=0
 fail=0
+
+inc_pass() { pass=$((pass + 1)); }
+inc_fail() { fail=$((fail + 1)); }
 
 run_case() {
   local id="$1" roi="$2" horizon="$3" expect="$4"
@@ -25,40 +28,45 @@ run_case() {
   local out
   if ! out=$(./lane_align "testcases/$id/mask.png" "testcases/$id/prior.csv" --roi "$roi" --horizon_frac "$horizon" "${debug_arg[@]}" 2>&1); then
     echo "  program error"
-    ((fail++))
-    return
+    inc_fail
+    return 0
   fi
   echo "  $out"
 
   local has_nan_off=0
   echo "$out" | grep -q 'offset_m=nan' && has_nan_off=1
+
+  # Parse r2=... at end of line
   local r2
   r2=$(echo "$out" | sed -n 's/.*r2=\(.*\)$/\1/p')
-  [[ -z "${r2:-}" ]] && {
+  if [[ -z "${r2:-}" ]]; then
     echo "  could not parse r2"
-    ((fail++))
-    return
-  }
+    inc_fail
+    return 0
+  fi
 
   if [[ "$expect" == "pass" ]]; then
     if [[ "$r2" == "nan" || $has_nan_off -eq 1 ]]; then
       echo "  ❌ expected a fit but got NaNs"
-      ((fail++))
-    elif awk -v v="$r2" 'BEGIN{exit !(v>=0.90)}'; then
+      inc_fail
+    elif awk -v v="$r2" 'BEGIN{exit (v>=0.90)?0:1}'; then
       echo "  ✅ pass"
-      ((pass++))
+      inc_pass
     else
       echo "  ❌ r2 too low ($r2)"
-      ((fail++))
+      inc_fail
     fi
   else
-    # Expect failure
-    if [[ "$r2" == "nan" || $has_nan_off -eq 1 || ! $(awk -v v="$r2" 'BEGIN{print (v>=0.90) ? "1" : "0"}') -eq 1 ]]; then
+    # Expect failure: NaNs OR r2 < 0.90
+    if [[ "$r2" == "nan" || $has_nan_off -eq 1 ]]; then
       echo "  ✅ expected failure"
-      ((pass++))
+      inc_pass
+    elif awk -v v="$r2" 'BEGIN{exit (v<0.90)?0:1}'; then
+      echo "  ✅ expected failure"
+      inc_pass
     else
       echo "  ❌ unexpectedly succeeded (r2=$r2)"
-      ((fail++))
+      inc_fail
     fi
   fi
 }

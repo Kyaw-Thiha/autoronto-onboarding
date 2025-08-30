@@ -13,3 +13,8 @@
 # IDEs
 .vscode/
 .idea/
+
+# Test Output
+/testcases
+lane_align
+
