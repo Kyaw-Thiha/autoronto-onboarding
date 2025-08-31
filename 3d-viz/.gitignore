@@ -10,3 +10,6 @@ __pycache__/
 .ws/.cache/
 .cache/
 
+# logs
+*.pid
+*.log
