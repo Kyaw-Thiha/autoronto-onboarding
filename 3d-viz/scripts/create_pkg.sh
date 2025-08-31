@@ -15,6 +15,26 @@ deps=("$@")
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 mkdir -p "$root/ws/src"
 cd "$root/ws"
+
+# Guard against nounset + unset AMENT_* vars when sourcing ROS env
+set +u
+: "${AMENT_TRACE_SETUP_FILES:=}"
+: "${AMENT_PYTHON_EXECUTABLE:=$(command -v python3 || true)}"
 source /opt/ros/${ROS_DISTRO:-kilted}/setup.bash
-ros2 pkg create "$pkg" "${deps[@]/#/--dependencies }" --build-type "$build_type" --destination-directory src
+set -u
+
+# Build proper dependencies arg (accepts with or without a leading --dependencies)
+dep_args=()
+if [[ ${#deps[@]} -gt 0 ]]; then
+  if [[ "${deps[0]}" == "--dependencies" ]]; then
+    deps=("${deps[@]:1}")
+  fi
+  if [[ ${#deps[@]} -gt 0 ]]; then
+    dep_args=(--dependencies "${deps[@]}")
+  fi
+fi
+
+# Correct call: flags first, package name last
+ros2 pkg create --build-type "$build_type" "${dep_args[@]}" --destination-directory src "$pkg"
+
 echo "Created $build_type package at ws/src/$pkg"
