@@ -7,7 +7,9 @@ These are the projects of application/onboarding projects for Autoronto's 3D Vis
 - [🟥 2D Visualization — Hotdog Detection (YOLOv11)](#-2d-visualization--hotdog-detection-yolov11)  
 - [🟩 Localization — Lane Offset & Heading from Binary Lane Mask](#-localization--lane-offset--heading-from-binary-lane-mask)
 
-## 🟦 3D Visualization — ROS2 Two-Sum Node
+--- 
+
+## 🟦 --- 3D Visualization — ROS2 Two-Sum Node ---
 
 ### 📖 Background  
 This project is based on the **R2Y5 3DOD Coding Baseline Question (C++)**.  
@@ -61,7 +63,7 @@ Custom **shell scripts** are provided in the repo to streamline:
 
 ---
 
-## 🟥 2D Visualization — Hotdog Detection (YOLOv11)
+## 🟥 --- 2D Visualization — Hotdog Detection (YOLOv11) ---
 
 ### 📖 Background  
 This project is based on the **R2Y5 2D Vision Task**.  
@@ -132,7 +134,7 @@ yolo detect predict model=runs/detect/train/weights/best.pt source=./data/val
 
 ---
 
-## 🟩 Localization — Lane Offset & Heading from Binary Lane Mask
+## 🟩 --- Localization — Lane Offset & Heading from Binary Lane Mask ---
 
 ### 📖 Background  
 Based on the **R2Y5 Localization Task**, this project estimates a vehicle’s **lateral offset** from lane center and **heading angle** relative to lane markings using a **binary image** of detected lanes.
