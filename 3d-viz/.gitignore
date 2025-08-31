@@ -1,0 +1,6 @@
+# colcon outputs
+ws/build/
+ws/install/
+ws/log/
+
+.env
