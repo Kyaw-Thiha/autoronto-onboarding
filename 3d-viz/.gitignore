@@ -4,3 +4,5 @@ ws/install/
 ws/log/
 
 .env
+
+__pycache__/

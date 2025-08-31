@@ -4,12 +4,12 @@ set -euo pipefail
 # -------- Config (you can override via env vars) -----------------------------
 PKG=${PKG:-sum_solver_py}
 EXEC=${EXEC:-two_sum}
-NODE_NAME=${NODE_NAME:-two_sum_node}       # your node's name in code
+NODE_NAME=${NODE_NAME:-sum_solver_py}       # your node's name in code
 TARGET=${TARGET:-9}                        # Int8 target
 INPUT_CSV=${INPUT_CSV:-"2,7,11,15"}        # comma-separated ints for /input
 EXPECT_A=${EXPECT_A:-0}                    # expected first index
 EXPECT_B=${EXPECT_B:-1}                    # expected second index
-WAIT_SECS=${WAIT_SECS:-8}                  # how long to wait for the node/topic
+WAIT_SECS=${WAIT_SECS:-16}                  # how long to wait for the node/topic
 # ----------------------------------------------------------------------------
 
 # # Try to source overlay from common locations if ROS isn't already set up

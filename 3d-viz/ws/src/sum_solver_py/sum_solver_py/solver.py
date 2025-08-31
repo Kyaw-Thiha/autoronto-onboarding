@@ -1,11 +1,11 @@
-from typing import List
+from typing import List, Optional
 from rclpy.node import Node
 from rclpy.qos import QoSProfile
 from std_msgs.msg import Int8MultiArray, Int8
 
 class TwoSumNode(Node):
-    input: List[int]
-    target: int
+    input: Optional[List[int]] = None
+    target: Optional[int] = None
 
     def __init__(self):
         super().__init__("sum_solver_py")
@@ -13,6 +13,9 @@ class TwoSumNode(Node):
         self.input_sub = self.create_subscription(Int8MultiArray, "/input", self.on_input, quality_of_service)
         self.target_sub = self.create_subscription(Int8, "/target", self.on_target, quality_of_service)
         self.pub = self.create_publisher(Int8MultiArray, "/solution", quality_of_service)
+
+        self.get_logger().info("TwoSumNode started and ready ✅")
+
 
     def on_input(self, msg: Int8MultiArray):
         self.input = list(msg.data)
