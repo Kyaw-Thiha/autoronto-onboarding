@@ -1,4 +1,13 @@
 # Localization
+This is my project for the localization team of UofT Autonomous Team where I wrote the cpp program to align the lanes.
+
+Essentially, I
+- thickens a polyline with elliptical dilation
+- intersects that region of interest with the actual mask below it
+- computes R^2 to fit the remaining region of interest with least-squared fit
+- wrote test cases inside `gen_test.py`
+- wrote the shell script (`test.sh`) to automatically build `lane_align_task.cpp` when updated, generate test case from `gen_test.py`, and test them on the executable
+
 ## Building files
 Ensure vcpkg is installed already.
 ```bash
