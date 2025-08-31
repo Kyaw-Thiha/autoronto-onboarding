@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            'two_sum = sum_solver_py.cli:main',
         ],
     },
 )
