@@ -56,8 +56,11 @@ private:
     if (!this->input.has_value() || !this->target.has_value()) {
       return;
     }
+
     std::unordered_map<int, int> pairs;
-    for (int i = 0; i < this->input.value().data.size(); ++i) {
+    int input_size = static_cast<int>(this->input.value().data.size());
+
+    for (int i = 0; i < input_size; ++i) {
       int num = this->input.value().data[i];
       int other_num = this->target.value().data - num;
 
