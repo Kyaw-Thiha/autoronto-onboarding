@@ -74,5 +74,7 @@ For testing with gcc
 
 ### Artifacts per case
 `mask.png` — binary ground-truth lane pixels (uint8; 0/255).
+
 `prior.csv` — sparse prior polyline: rows u,v (x,y in pixels).
+
 `debug.png` — only written for pass runs when --debug is provided: shows mask (gray), ROI tube (blue), fitted line (yellow), centerline (green), and the evaluation point (red).
