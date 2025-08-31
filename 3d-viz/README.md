@@ -34,6 +34,22 @@ For Docker/infra details and helper scripts like `workon.sh`, see: **ros-workspa
 
 ---
 
+## Visualize
+Inside the package, enable the node.
+```bash
+./scripts/enable.sh
+```
+
+Visualize the node.
+```bash
+ros2 run rqt_graph rqt_graph
+```
+
+Disable the node back.
+```bash
+./scripts/disable.sh
+```
+
 ## Quick Start
 
 On the host (outside the container), from your infra repo:
